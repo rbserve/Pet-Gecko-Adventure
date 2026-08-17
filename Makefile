@@ -1,27 +1,26 @@
 NAME        = mygame
 CXX         = c++
-CXXFLAGS    = -Wall -Wextra -Werror -std=c++17 
-LDFLAGS     = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+CXXFLAGS    = -Wall -Wextra -Werror -std=c++17
 
-SRC_DIR     = src
-OBJ_DIR     = obj
+SRC_DIR       = src
+OBJ_DIR       = obj
+RAYLIB_DIR    = third_party/raylib/src
+RAYLIB_LIB    = $(RAYLIB_DIR)/libraylib.a
+
 SRCS        = $(wildcard $(SRC_DIR)/*.cpp)
 OBJS        = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
-ifeq ($(OS),Windows_NT)
-    RAYLIB_PATH = C:/raylib
-    CXXFLAGS   += -I$(RAYLIB_PATH)/include
-    LDFLAGS     = -L$(RAYLIB_PATH)/lib -lraylib -lopengl32 -lgdi32 -lwinmm -static
-    NAME_OUT    = $(NAME).exe
-else
-    LDFLAGS     = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
-    NAME_OUT    = $(NAME)
-endif
+CXXFLAGS   += -I$(RAYLIB_DIR)
+LDFLAGS     = -L$(RAYLIB_DIR) -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
-all: $(NAME_OUT)
+all: $(RAYLIB_LIB) $(NAME)
 
-$(NAME_OUT): $(OBJS)
-	$(CXX) $(OBJS) -o $(NAME_OUT) $(LDFLAGS)
+# Build raylib itself (only runs once, cached afterward)
+$(RAYLIB_LIB):
+	$(MAKE) -C $(RAYLIB_DIR) PLATFORM=PLATFORM_DESKTOP
+
+$(NAME): $(OBJS)
+	$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -33,7 +32,8 @@ clean:
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -f $(NAME) $(NAME).exe
+	rm -f $(NAME)
+	$(MAKE) -C $(RAYLIB_DIR) clean
 
 re: fclean all
 
