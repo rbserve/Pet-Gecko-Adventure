@@ -15,9 +15,9 @@ public:
     int GetSpeed() const;
     int GetMaxSpeed() const;
     Texture2D GetSprite() const;
+    void Draw() override;
 
 private:
-    Texture2D m_sprite;
 
     int m_hunger;       //deplet overtime, refill by eating flies
     int m_affection;    //increase by petting on it and simply playing

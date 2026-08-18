@@ -6,6 +6,6 @@ class Fly : public Entity{
 public:
     Fly();
     Texture2D GetSprite() const;
+    void Draw() override;
 private:
-    Texture2D m_sprite;
 };

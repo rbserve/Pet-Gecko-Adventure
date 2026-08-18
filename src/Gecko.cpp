@@ -2,12 +2,26 @@
 #include <algorithm>
 
 Gecko::Gecko():
-    m_sprite(LoadTexture("asset/geckoSprite.png")),
+    Entity(LoadTexture("asset/geckoSprite.png")),
     m_hunger(3), 
     m_affection(0), 
     m_speed(0),
     m_maxSpeed(5)
 {};
+
+void Gecko::Draw() {
+    // DrawCircle(m_position.x,m_position.y, 2, RED);
+    DrawTexturePro(
+        GetSprite(), 
+        {0,0,(float)m_sprite.width, (float)m_sprite.height},
+        {m_position.x, m_position.y,(float)m_sprite.width, (float)m_sprite.height},
+        {m_sprite.width / 2.0f, m_sprite.height/2.0f}, 
+        m_rotation, 
+        WHITE 
+            );
+    const int lineLength = 100;
+    DrawLine(m_position.x, m_position.y, GetForwardVec(lineLength).x, GetForwardVec(lineLength).y, RED);
+};
 
 //setter
 void Gecko::SetAffection(int newVal){
