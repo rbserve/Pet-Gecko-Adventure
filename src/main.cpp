@@ -3,6 +3,7 @@
 #include "Entity.hpp"
 #include "Gecko.hpp"
 #include "Fly.hpp"
+#include "LinearPathFinding.hpp"
 
 int main() {
     const int screenWidth = 800;
@@ -13,26 +14,36 @@ int main() {
     SetTargetFPS(60);
 
     float speed = 4.0f;
-    float rotationSpeed = 5.0f;
+    // float rotationSpeed = 5.0f;
 
     //test entity
     Fly fly;
     Gecko gecko;
 
+    //pathfinding tools
+    LinearPathFinding geckoPathFinder;
+
 
 
     while (!WindowShouldClose()) {
-        int inputX = ((IsKeyDown(KEY_RIGHT))?speed:0 + (IsKeyDown(KEY_LEFT))?-speed:0);
-        int inputY = ((IsKeyDown(KEY_UP))?-speed:0 + (IsKeyDown(KEY_DOWN))?speed:0);
+        // int inputX = ((IsKeyDown(KEY_RIGHT))?speed:0 + (IsKeyDown(KEY_LEFT))?-speed:0);
+        // int inputY = ((IsKeyDown(KEY_UP))?-speed:0 + (IsKeyDown(KEY_DOWN))?speed:0);
         
         // Update position
-        Vector2 newPos = (Vector2){
-                gecko.GetForwardVec(speed * inputX).x,
-                gecko.GetForwardVec(speed * inputY).y
-        };
+        // Vector2 newPos = (Vector2){
+        //         gecko.GetForwardVec(speed * inputX).x,
+        //         gecko.GetForwardVec(speed * inputY).y
+        // };
         
-        if (inputY != 0) gecko.SetPosition(newPos);
-        if (inputX != 0) gecko.SetRotation(gecko.GetRotation() + inputX * rotationSpeed);
+        // if (inputY != 0) gecko.SetPosition(newPos);
+        // if (inputX != 0) gecko.SetRotation(gecko.GetRotation() + inputX * rotationSpeed);
+
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
+            const Vector2 newTarget =  GetMousePosition();
+            geckoPathFinder.SetTarget(newTarget);
+        }
+        
+        gecko.SetPosition(geckoPathFinder.GetNextPosition(gecko.GetPosition(), speed));
 
         // Draw
         BeginDrawing();

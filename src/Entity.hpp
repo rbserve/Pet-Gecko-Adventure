@@ -12,21 +12,23 @@ public:
 
     virtual ~Entity() = default;
 
-    void SetPosition(Vector2& newVal){m_position = newVal;};
-    Vector2 GetPosition() const {return m_position;};
+    void SetPosition(const Vector2& newVal){m_position = newVal;};
+    const Vector2& GetPosition() const {return m_position;};
 
     void SetRotation(float newVal){
         m_rotation = std::fmodf(newVal, 360.0f);
     };
-    float GetRotation() const {return m_rotation;};
+    const float& GetRotation() const {return m_rotation;};
 
     virtual void Draw()=0;
+
     // return forward normalised vector based on rotation
-    Vector2 GetForwardVec(float length){
-        return Vector2{
+    const Vector2 GetForwardVec(float length){
+        const Vector2 result =  Vector2{
             m_position.x + (float)std::cos(m_rotation * M_PI/180.0f) * length,
             m_position.y + (float)std::sin(m_rotation * M_PI/180.0f) * length
         };
+        return result;
     }
     
 protected:
