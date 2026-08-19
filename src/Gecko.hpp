@@ -7,12 +7,14 @@ public:
     Gecko();
     ~Gecko();
     void SetAffection(int val);
-    void SetHunger(int val);
+    void SetHunger(float val);
+    void SetMaxHunger(float val);
     void SetSpeed(int val);
     void SetMaxSpeed(int val);
 
     int GetAffection() const;
-    int GetHunger() const;
+    float GetHunger() const;
+    float GetMaxHunger() const;
     int GetSpeed() const;
     int GetMaxSpeed() const;
     Texture2D GetSprite() const;
@@ -20,7 +22,8 @@ public:
 
 private:
 
-    int m_hunger;       //deplet overtime, refill by eating flies
+    float m_hunger;       //deplet overtime, refill by eating flies
+    float m_maxHunger;    
     int m_affection;    //increase by petting on it and simply playing
     int m_speed;        //increase when hunger and affection full
     int m_maxSpeed;     //mutable speed cap

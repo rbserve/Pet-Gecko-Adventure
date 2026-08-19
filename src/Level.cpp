@@ -4,7 +4,7 @@
 Level::Level(const int screenWidth, const int screenHeight, const Texture2D& sprite):
     m_sprite(sprite)
 {
-    const int fliesCount = rand() % 2;
+    const int fliesCount = rand() % 3;
     for (int i = 0; i<fliesCount; ++i){
         m_flies.emplace_back(std::make_unique<Fly>());
         Vector2 newPos = Vector2{(float)GetRandomValue(10, screenWidth-10), (float)GetRandomValue(10, screenHeight-10)};

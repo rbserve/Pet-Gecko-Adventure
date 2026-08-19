@@ -1,6 +1,8 @@
 #include "LevelGenerator.hpp"
+#include <algorithm>
 
 LevelGenerator::LevelGenerator(const int screenWidth, const int screenHeight):m_levels(), m_currLevelID(0){
+    //the one and only home level  ( might do inheritance later)
     m_levels.emplace_back(std::make_unique<Level>(screenWidth, screenHeight, m_textureMap.at(0)));
 };
 
@@ -11,7 +13,7 @@ LevelGenerator::~LevelGenerator(){
 }
 
 void LevelGenerator::CreateNewLevel(const int screenWidth, const int screenHeight){
-    const int levelType = (rand() % m_textureMap.size()-1)+1;
+    const int levelType = std::max((rand() % m_textureMap.size() +1 ), static_cast<unsigned long>(1)); // always skip 0 home level,  
     m_levels.emplace_back(std::make_unique<Level>(screenWidth, screenHeight, m_textureMap.at(levelType)));
 };
 
