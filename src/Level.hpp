@@ -1,0 +1,19 @@
+#pragma once
+#include "raylib.h"
+#include "Fly.hpp"
+#include <vector>
+#include <memory>
+#include <unordered_map>
+
+
+class Level {
+public:
+    //level 0 type is home, other is explorable level
+    Level(const int screenWidth, const int screenHeight, const Texture2D& sprite);
+    int CheckFliesCollision(const Rectangle& other);
+    void Draw();
+private:
+    std::unordered_map<int, Texture2D> m_textureMap;
+    std::vector<std::unique_ptr<Fly>> m_flies;
+    const Texture2D& m_sprite;
+};

@@ -5,6 +5,7 @@
 #include "Gecko.hpp"
 #include "Fly.hpp"
 #include "LinearPathFinding.hpp"
+#include "LevelGenerator.hpp"
 #include <memory> 
 #include <vector>
 
@@ -31,16 +32,13 @@ int main() {
     // SetConfigFlags(FLAG_WINDOW_TOPMOST | FLAG_WINDOW_UNDECORATED);
     InitWindow(screenWidth, screenHeight, "Pet Cicak Adventure");
     SetTargetFPS(60);
-    // Texture2D backgroundImage = LoadTexture("asset/cicakWall.png");
-    Texture2D backgroundImage = LoadTexture("asset/cicakHome.png");
 
 
     float speed = 4.0f;
     float rotationSpeed = 2.0f;
-    float timer = 2.0f;
 
     //test entity
-    std::vector<std::unique_ptr<Fly>> flies;
+    LevelGenerator levelGenerator(screenWidth, screenHeight);
 
     Gecko gecko;
 
@@ -50,29 +48,9 @@ int main() {
 
 
     while (!WindowShouldClose()) {
-
-        //spawn flies randomly
-        timer -= GetFrameTime();
-        if(timer <= 0){
-            timer = 2.0f;
-            // std::unique_ptr<Fly> newFly = 
-            flies.emplace_back(std::make_unique<Fly>());
-            Vector2 newPos = Vector2{(float)GetRandomValue(10, screenWidth-10), (float)GetRandomValue(10, screenHeight-10)};
-            flies.back()->SetPosition(newPos);
-            flies.back()->SetCollisionRectPosition(newPos);
-
-        }
-
-        //collision detection
-        for(auto it = flies.begin(); it != flies.end();){
-            if(CheckCollisionRecs(gecko.GetCollisionRectPosition(), (*it)->GetCollisionRectPosition())){
-                it = flies.erase(it);
-                gecko.SetHunger(gecko.GetHunger() + 1);
-            }else{
-                ++it;
-            }
-        }
         
+        levelGenerator.GetCurrentLevel().CheckFliesCollision(gecko.GetCollisionRect());
+
         //set gecko target
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
             mouseTarget =  GetMousePosition();
@@ -103,19 +81,17 @@ int main() {
         // Draw
         BeginDrawing();
             ClearBackground(RAYWHITE);
-            DrawTexture(backgroundImage, 0, 0, WHITE);
+            levelGenerator.DrawCurrentLevel();
             DrawCircle(mouseTarget.x, mouseTarget.y, 15, RED);
             gecko.Draw();
             
-            for (auto& f : flies){
-                f->Draw();
-            }
+            
             std::string hungerBar = "Hunger: " + std::to_string(gecko.GetHunger());
             DrawText(hungerBar.c_str(), 30, 10, 20, DARKBLUE);
             
         EndDrawing();
     }
-    UnloadTexture(backgroundImage);
+    
 
     CloseWindow();
     return 0;

@@ -29,7 +29,7 @@ void Entity::SetCollisionRectPosition(const Vector2& newVal){
     m_collisionRect.y = newVal.y - m_sprite.height/2;
 };
 
-const Rectangle& Entity::GetCollisionRectPosition() const{
+const Rectangle& Entity::GetCollisionRect() const{
     return m_collisionRect;
 };
 

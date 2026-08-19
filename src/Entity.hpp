@@ -15,7 +15,7 @@ public:
     const float& GetRotation() const;
 
     void SetCollisionRectPosition(const Vector2& newVal);
-    const Rectangle& GetCollisionRectPosition() const;
+    const Rectangle& GetCollisionRect() const;
 
     virtual void Draw()=0;
 
