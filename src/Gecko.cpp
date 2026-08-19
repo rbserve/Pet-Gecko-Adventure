@@ -3,11 +3,15 @@
 
 Gecko::Gecko():
     Entity(LoadTexture("asset/geckoSprite.png")),
-    m_hunger(3), 
+    m_hunger(0), 
     m_affection(0), 
     m_speed(0),
     m_maxSpeed(5)
 {};
+
+Gecko::~Gecko(){
+    UnloadTexture(m_sprite);
+}
 
 void Gecko::Draw() {
     // DrawCircle(m_position.x,m_position.y, 2, RED);
@@ -19,8 +23,9 @@ void Gecko::Draw() {
         m_rotation, 
         WHITE 
             );
+    // DrawRectangle(m_collisionRect.x, m_collisionRect.y, m_collisionRect.width, m_collisionRect.height, Color{225,0,0,100});
     const int lineLength = 100;
-    DrawLine(m_position.x, m_position.y, GetForwardVec(lineLength).x, GetForwardVec(lineLength).y, RED);
+    DrawLine(m_position.x, m_position.y,m_position.x + GetForwardVec(lineLength).x, m_position.y + GetForwardVec(lineLength).y, RED);
 };
 
 //setter

@@ -5,6 +5,7 @@
 class Gecko : public Entity{
 public:
     Gecko();
+    ~Gecko();
     void SetAffection(int val);
     void SetHunger(int val);
     void SetSpeed(int val);

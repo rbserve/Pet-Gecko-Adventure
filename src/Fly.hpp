@@ -7,5 +7,6 @@ public:
     Fly();
     Texture2D GetSprite() const;
     void Draw() override;
+    ~Fly();
 private:
 };

@@ -11,6 +11,7 @@ Vector2 LinearPathFinding::GetNextPosition(const Vector2& currPos, const float s
         return currPos;
     }else{ // not within 
         return Vector2{
+            //normalise then applied speed constant
             currPos.x + (m_target.x-currPos.x)/distance * speed,
             currPos.y + (m_target.y-currPos.y)/distance * speed
         };
