@@ -22,7 +22,11 @@ private:
     const std::unordered_map<int, Texture2D> m_textureMap = {
         {0, LoadTexture("asset/cicakHome.png")},
         {1, LoadTexture("asset/cicakWall.png")},
-        {2, LoadTexture("asset/cicakWall2.png")}
+        {2, LoadTexture("asset/cicakWall2.png")},
+        {3, LoadTexture("asset/cicakWall3.png")},
+        {4, LoadTexture("asset/cicakWall4.png")},
+        {5, LoadTexture("asset/cicakWall5.png")},
+        {6, LoadTexture("asset/cicakWall6.png")},
     };
 
 };
