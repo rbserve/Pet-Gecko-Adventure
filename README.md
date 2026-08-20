@@ -1,39 +1,56 @@
 # Gauntlet Mini 2026 entries
-## THEME : MALAYSIA DAY
+
 
 Author: Joshua Ling Xian Le
-
+## THEME : MALAYSIA DAY
 ## What is the game about:
-- blah blah blah
+Malaysia is our home, and our home also has a cute member. No it is not Kuching cat, it is Cicak the gecko. 
+
+This is about the adventure the cicak embark everyday to grow stronger and stronger. Finally one day, he can discover the secret of the malaysia greatness.
 
 ## Instruction to build and run
 This game is only available to linux/WSL.
 
-run following steps on linux/WSL after git clone 
+run following steps on linux/WSL to built and play the game
+
+- git clone (might take 10 minutes to download raylib submodule)
 
 1. sudo apt update
 2. sudo apt install -y build-essential libasound2-dev libx11-dev libxrandr-dev libxi-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev
-3. git clone --recurse-submodules https://github.com/yourusername/mygame.git
-4. cd mygame
-5. make
-6. ./mygame
+3. git clone --recurse-submodules https://github.com/rbserve/Pet-Gecko-Adventure
+4. make
+5. ./mygame
 
-7. (in case no audio)
+6. (in case no audio)
 sudo apt install libasound2-dev libpulse-dev
 
 ## Tech used:
-- c++ (main coding language)
-- raylib (for rendering components and window creation)
+- c++ - main coding language
+- raylib - for rendering components and window creation to audio system. It simplify the development process.
 
-ps which library you chose and why, and what you built yourself versus what the library gave you
 
-## stuff
--- a short "where Week 1 shows up in this code" map: const correctness, ownership/RAII, class design, containers, any pattern, any algorithm, tests
+## c++ workshop application
 
-## stuff
--- what you cut and what you'd do differently with more time
+I have apply const-correct, cleanly structured code of Week 1 Day 1 throughout my codebase. 
 
--- demo 10 minutes 
+I have used smart pointers and vector to store varies class and encapsulate them with virtual function. For example, my entity class have 2 derived child class Gecko and flies. I can easily add new entity such as Cat or spider without duplicate codes. This is for day2 to day 4.
+
+I have used facade from day 5 in varies place, when resetting gecko, resetting levelGenerator, drawing objects which order mattered.
+
+Lastly, I have implement simple pathfinding algorithm for gecko that it will get the next step instead of knowing the whole route, because the target will change frequently.
+
+
+## what I cut and what I'll do with more time
+I cut A lot of stuff, I was planning to add more entity such as boss kuching the cat, and spider. 
+
+The secret found in the game is also a placeholder. There is no secret so far in the game, was planning to add discoverable item that teach the player about Malaysia and decorate the cicak home as well.
+
+On the technicall side of thing, the flies and gecko are not animated. I was planning to dynamically render cicak body to bend and twist, it will make it more intersting and realistic.
+
+If I have more time, I will go ahead and complete secret discoverable items. However, plan doesn't always go well. I will add more entities as well to make the game more variety. I will said this game is 60% complete.
+
+## demo video
+https://drive.google.com/file/d/1BYyTsEU3VeOt9lim8OnXrC3Jfj9GcSOI/view?usp=sharing
 
 
 # License
