@@ -1,9 +1,21 @@
 #include "LevelGenerator.hpp"
 #include <algorithm>
 
-LevelGenerator::LevelGenerator(const int screenWidth, const int screenHeight):m_levels(), m_currLevelID(0){
+LevelGenerator::LevelGenerator(const int screenWidth, const int screenHeight, Gecko& gecko):m_levels(), m_currLevelID(0){
     //the one and only home level  ( might do inheritance later)
-    m_levels.emplace_back(std::make_unique<Level>(screenWidth, screenHeight, m_textureMap.at(0)));
+    m_levels.emplace_back(std::make_unique<HomeLevel>(screenWidth, screenHeight, m_textureMap.at(0), gecko, 0));
+};
+
+void LevelGenerator::Reset(){
+    SwitchLevel(0);
+    for (auto it = m_levels.begin(); it != m_levels.end();){
+        if ((*it)->GetID() == 0) {
+            ++it;
+        }else{
+            it = m_levels.erase(it);
+        }
+    }
+
 };
 
 LevelGenerator::~LevelGenerator(){
@@ -14,7 +26,7 @@ LevelGenerator::~LevelGenerator(){
 
 void LevelGenerator::CreateNewLevel(const int screenWidth, const int screenHeight){
     const int levelType = std::max((rand() % m_textureMap.size() +1 ), static_cast<unsigned long>(1)); // always skip 0 home level,  
-    m_levels.emplace_back(std::make_unique<Level>(screenWidth, screenHeight, m_textureMap.at(levelType)));
+    m_levels.emplace_back(std::make_unique<Level>(screenWidth, screenHeight, m_textureMap.at(levelType), 1));
 };
 
 Level& LevelGenerator::GetCurrentLevel() const{

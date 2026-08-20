@@ -6,6 +6,7 @@
 #include "Fly.hpp"
 #include "LinearPathFinding.hpp"
 #include "LevelGenerator.hpp"
+#include "HomeLevel.hpp"
 #include <memory> 
 #include <vector>
 
@@ -34,19 +35,21 @@ int main() {
     SetTargetFPS(60);
 
     float rotationSpeed = 2.0f;
+    float startGameOverTime = 0;
 
-    //test entity
-    LevelGenerator levelGenerator(screenWidth, screenHeight);
-    bool isOnRightEdge = false;
-    bool isOnLeftEdge = false;
-
+    
     Gecko gecko;
     gecko.SetPosition(Vector2{screenWidth/2, 0.8 *screenHeight});
     
+    //test entity
+    LevelGenerator levelGenerator(screenWidth, screenHeight, gecko);
+    bool isOnRightEdge = false;
+    bool isOnLeftEdge = false;
+    // dynamic_cast<HomeLevel*>(&levelGenerator.GetCurrentLevel())->DrawMenu();
 
     //pathfinding tools
     LinearPathFinding geckoPathFinder;
-    Vector2 mouseTarget = gecko.GetPosition();
+    Vector2 mouseTarget = Vector2{gecko.GetPosition().x + 10, gecko.GetPosition().y + 10};
     geckoPathFinder.SetTarget(mouseTarget);
 
 
@@ -88,14 +91,22 @@ int main() {
 
         //gecko hunger debuff
         if (gecko.GetHunger() < 0.2*gecko.GetMaxHunger()){
-            gecko.SetSpeed(0.2 * gecko.GetMaxSpeed());
+            gecko.SetSpeed(0.5 * gecko.GetMaxSpeed());
         }else {
             gecko.SetSpeed(gecko.GetMaxSpeed());
         }
-
-        if(gecko.GetHunger() <= 0.05){
-            std::cout << "Pet cicak is dead :(";
+        
+        //game over
+        if(gecko.GetHunger() <= 0.05 && startGameOverTime == 0){
+            startGameOverTime = GetTime();
+            gecko.SetPosition(Vector2{screenWidth/2, 0.8 *screenHeight});
+            gecko.Reset();
+            levelGenerator.Reset();
+            Vector2 mouseTarget = Vector2{gecko.GetPosition().x + 10, gecko.GetPosition().y + 10};
+            geckoPathFinder.SetTarget(mouseTarget);
         }
+
+        
 
         //move to next level by clicking [SPACE] on the right bound
         const int bound = 150;
@@ -162,6 +173,15 @@ int main() {
             if (isOnLeftEdge){
                 std::string leftEdgeHint = "[SPACE] to go back";
                 DrawText(leftEdgeHint.c_str(), geckoCurrPos.x-150, geckoCurrPos.y + 40, 30, DARKBLUE);
+            }
+
+            //game over screen
+        if ( startGameOverTime != 0 && (GetTime() - startGameOverTime) <= 2){
+                //sleeping 
+                DrawRectangle(0,0,1920, 1080, BLACK);
+                DrawText("Pet Cicak starve to death :(", 650, 540, 40, BLUE);
+            }else{
+                startGameOverTime = 0;
             }
             
         EndDrawing();

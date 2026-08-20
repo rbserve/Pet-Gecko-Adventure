@@ -7,11 +7,23 @@ Gecko::Gecko():
     m_maxHunger(3),
     m_affection(0), 
     m_speed(5),
-    m_maxSpeed(5)
+    m_maxSpeed(5),
+    m_level(1),
+    m_secretFound(0)
 {};
 
 Gecko::~Gecko(){
     UnloadTexture(m_sprite);
+}
+
+void Gecko::Reset(){
+    m_hunger = 1;
+    m_maxHunger = 3;
+    m_affection = 0;
+    m_speed = 5;
+    m_maxSpeed = 5;
+    m_level = 1;
+    m_secretFound = 0;
 }
 
 void Gecko::Draw() {
@@ -50,6 +62,19 @@ void Gecko::SetMaxSpeed(int newVal){
     m_maxSpeed = std::clamp(newVal, 0, 10);
 };
 
+void Gecko::SetLevel(int val){
+    if (val > 0){
+        m_affection += 1;
+        m_maxSpeed += 1;
+        m_speed = m_maxSpeed;
+        m_maxHunger += 1;
+    }
+    m_level = val;
+};
+
+void Gecko::SetSecretFound(int val){
+    m_secretFound = val;
+}
 
 
 //getter
@@ -70,4 +95,10 @@ int Gecko::GetMaxSpeed() const{
 };
 Texture2D Gecko::GetSprite() const{
     return m_sprite;
+};
+int Gecko::GetLevel() const{
+    return m_level;
+};
+int Gecko::GetSecretFound() const{
+    return m_secretFound;
 };

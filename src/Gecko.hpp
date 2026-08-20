@@ -11,14 +11,21 @@ public:
     void SetMaxHunger(float val);
     void SetSpeed(int val);
     void SetMaxSpeed(int val);
+    void SetLevel(int val);
+    void SetSecretFound(int val);
 
     int GetAffection() const;
     float GetHunger() const;
     float GetMaxHunger() const;
     int GetSpeed() const;
     int GetMaxSpeed() const;
+    int GetLevel() const;
+    int GetSecretFound() const;
+    
     Texture2D GetSprite() const;
     void Draw() override;
+
+    void Reset();
 
 private:
 
@@ -27,4 +34,6 @@ private:
     int m_affection;    //increase by petting on it and simply playing
     int m_speed;        //increase when hunger and affection full
     int m_maxSpeed;     //mutable speed cap
+    int m_level;
+    int m_secretFound;
 };

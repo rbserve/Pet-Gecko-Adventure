@@ -1,8 +1,9 @@
 #include  "Level.hpp"
 
 //level 0 type is home, other is explorable level
-Level::Level(const int screenWidth, const int screenHeight, const Texture2D& sprite):
-    m_sprite(sprite)
+Level::Level(const int screenWidth, const int screenHeight, const Texture2D& sprite, const int id):
+    m_sprite(sprite),
+    m_id(id)
 {
     const int fliesCount = rand() % 3;
     for (int i = 0; i<fliesCount; ++i){
@@ -36,3 +37,5 @@ void Level::Draw(){
                 f->Draw();
     }
 }
+
+int Level::GetID() const{return m_id;};
