@@ -18,6 +18,8 @@ run following steps on linux/WSL after git clone
 5. make
 6. ./mygame
 
+7. (in case no audio)
+sudo apt install libasound2-dev libpulse-dev
 
 ## Tech used:
 - c++ (main coding language)
@@ -38,3 +40,5 @@ ps which library you chose and why, and what you built yourself versus what the 
 This project uses raylib, licensed under the [zlib/libpng license](https://github.com/raysan5/raylib/blob/master/LICENSE).
 
 - [raylib](https://www.raylib.com/) — a simple and easy-to-use library to enjoy videogames programming, created by [Ramon Santamaria](https://github.com/raysan5) and [contributors](https://github.com/raysan5/raylib/graphs/contributors).
+
+Background Music by <a href="https://pixabay.com/users/soundore-50821731/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=366903">Soundore</a> from <a href="https://pixabay.com/music//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=366903">Pixabay</a>

@@ -52,9 +52,17 @@ int main() {
     Vector2 mouseTarget = Vector2{gecko.GetPosition().x + 10, gecko.GetPosition().y + 10};
     geckoPathFinder.SetTarget(mouseTarget);
 
+    //background music
+    InitAudioDevice();
+    Music music = LoadMusicStream("asset/soundore-cartoon-366903.ogg");
+    music.looping = true;
+    PlayMusicStream(music);
+
 
     while (!WindowShouldClose()) {
         
+        UpdateMusicStream(music); 
+
         //collision check to every flies in the current level
         if (levelGenerator.GetCurrentLevel().CheckFliesCollision(gecko.GetCollisionRect())){
             gecko.SetHunger(gecko.GetHunger() + 1);
@@ -187,7 +195,8 @@ int main() {
         EndDrawing();
     }
     
-
+    UnloadMusicStream(music);
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }
