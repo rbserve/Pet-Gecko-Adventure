@@ -6,7 +6,7 @@ Gecko::Gecko():
     m_hunger(1), 
     m_maxHunger(3),
     m_affection(0), 
-    m_speed(0),
+    m_speed(5),
     m_maxSpeed(5)
 {};
 

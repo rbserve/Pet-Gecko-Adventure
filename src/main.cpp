@@ -33,8 +33,6 @@ int main() {
     InitWindow(screenWidth, screenHeight, "Pet Cicak Adventure");
     SetTargetFPS(60);
 
-
-    float speed = 4.0f;
     float rotationSpeed = 2.0f;
 
     //test entity
@@ -67,7 +65,7 @@ int main() {
         
         //update gecko state
         const Vector2 geckoCurrPos = gecko.GetPosition(); 
-        const Vector2 newPos = geckoPathFinder.GetNextPosition(gecko.GetPosition(), speed);
+        const Vector2 newPos = geckoPathFinder.GetNextPosition(gecko.GetPosition(), gecko.GetSpeed());
         
         //only update when gecko is moving
         if (newPos.x != geckoCurrPos.x && newPos.y != geckoCurrPos.y){
@@ -76,7 +74,7 @@ int main() {
             const Vector2 directionVec = Vector2{mouseTarget.x -gecko.GetPosition().x, mouseTarget.y - gecko.GetPosition().y};
 
             //deplet hunger
-            gecko.SetHunger(gecko.GetHunger() - 0.1 * GetFrameTime());
+            gecko.SetHunger(gecko.GetHunger() - 0.05 * GetFrameTime());
 
             const float angleToMove = GetMiddleDegree(gecko.GetForwardVec(1), directionVec);
             
@@ -86,6 +84,17 @@ int main() {
                 }
                 gecko.SetRotation(gecko.GetRotation() + rotationSpeed);
             }
+        }
+
+        //gecko hunger debuff
+        if (gecko.GetHunger() < 0.2*gecko.GetMaxHunger()){
+            gecko.SetSpeed(0.2 * gecko.GetMaxSpeed());
+        }else {
+            gecko.SetSpeed(gecko.GetMaxSpeed());
+        }
+
+        if(gecko.GetHunger() <= 0.05){
+            std::cout << "Pet cicak is dead :(";
         }
 
         //move to next level by clicking [SPACE] on the right bound
@@ -139,11 +148,13 @@ int main() {
             DrawCircle(mouseTarget.x, mouseTarget.y, 15, RED);
             gecko.Draw();
             
-            
-            std::string hungerBar = "Hunger: " + std::to_string(gecko.GetHunger()) +
-                                     "/" + std::to_string(gecko.GetMaxHunger());
+            //gecko hunger bar
+            std::string hungerBar = "Hunger: ";
             DrawText(hungerBar.c_str(), 30, 10, 50, DARKBLUE);
+            DrawRectangle(30, 80, 500, 50, GRAY);
+            DrawRectangle(30, 80,(500* gecko.GetHunger()/gecko.GetMaxHunger()), 50, GREEN);
 
+            //boundary hint
             if (isOnRightEdge){
                 std::string rightEdgeHint = "[SPACE] to next level";
                 DrawText(rightEdgeHint.c_str(), geckoCurrPos.x-200, geckoCurrPos.y + 40, 30, DARKBLUE);
