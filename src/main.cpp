@@ -10,18 +10,9 @@
 #include <memory> 
 #include <vector>
 
-float GetMiddleDegree(const Vector2& v1, const Vector2& v2){
-    const float lengthV1 = std::sqrt(v1.x * v1.x + v1.y * v1.y);
-    const float lengthV2 = std::sqrt(v2.x * v2.x + v2.y * v2.y);
 
-    const float dotProduct = (v1.x * v2.x) + (v1.y * v2.y);
-    const float result = std::acos(dotProduct/(lengthV1 * lengthV2)) * RAD2DEG; 
 
-    // std::cout << "v1 :" + std::to_string(lengthV1) + " v2: " + std::to_string(lengthV2) << std::endl; 
-    // std::cout << "dot product: " + std::to_string(dotProduct) << std::endl;
-    // std::cout << "final result: " + std::to_string(result) << std::endl;
-    return result;
-}
+
 
 int main() {
     const int screenWidth = 1920;
@@ -53,15 +44,15 @@ int main() {
     geckoPathFinder.SetTarget(mouseTarget);
 
     //background music
-    InitAudioDevice();
-    Music music = LoadMusicStream("asset/soundore-cartoon-366903.ogg");
-    music.looping = true;
-    PlayMusicStream(music);
+    // InitAudioDevice();
+    // Music music = LoadMusicStream("asset/soundore-cartoon-366903.ogg");
+    // music.looping = true;
+    // PlayMusicStream(music);
 
 
     while (!WindowShouldClose()) {
         
-        UpdateMusicStream(music); 
+        // UpdateMusicStream(music); 
 
         //collision check to every flies in the current level
         if (levelGenerator.GetCurrentLevel().CheckFliesCollision(gecko.GetCollisionRect())){
@@ -87,7 +78,7 @@ int main() {
             //deplet hunger
             gecko.SetHunger(gecko.GetHunger() - 0.05 * GetFrameTime());
 
-            const float angleToMove = GetMiddleDegree(gecko.GetForwardVec(1), directionVec);
+            const float angleToMove = Ultilities::GetMiddleDegree(gecko.GetForwardVec(1), directionVec);
             
             if(abs(angleToMove) > rotationSpeed){
                 if (angleToMove > 180){ //counter clockwise rotate
@@ -117,7 +108,7 @@ int main() {
         
 
         //move to next level by clicking [SPACE] on the right bound
-        const int bound = 150;
+        const int bound = 200;
         if (geckoCurrPos.x >= screenWidth - bound){
             isOnRightEdge = true;
         }else{
@@ -169,7 +160,7 @@ int main() {
             
             //gecko hunger bar
             std::string hungerBar = "Hunger: ";
-            DrawText(hungerBar.c_str(), 30, 10, 50, DARKBLUE);
+            Ultilities::DrawOutlinedText(hungerBar.c_str(), 30, 10, 50, DARKBLUE, 2, WHITE);
             DrawRectangle(30, 80, 500, 50, GRAY);
             DrawRectangle(30, 80,(500* gecko.GetHunger()/gecko.GetMaxHunger()), 50, GREEN);
 
@@ -195,8 +186,8 @@ int main() {
         EndDrawing();
     }
     
-    UnloadMusicStream(music);
-    CloseAudioDevice();
+    // UnloadMusicStream(music);
+    // CloseAudioDevice();
     CloseWindow();
     return 0;
 }

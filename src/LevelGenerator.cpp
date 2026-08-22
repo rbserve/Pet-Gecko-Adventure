@@ -25,7 +25,7 @@ LevelGenerator::~LevelGenerator(){
 }
 
 void LevelGenerator::CreateNewLevel(const int screenWidth, const int screenHeight){
-    const int levelType = std::max((rand() % m_textureMap.size() +1 ), static_cast<unsigned long>(1)); // always skip 0 home level,  
+    const int levelType = std::max((rand() % m_textureMap.size() ), static_cast<unsigned long>(1)); // always skip 0 home level,  
     m_levels.emplace_back(std::make_unique<Level>(screenWidth, screenHeight, m_textureMap.at(levelType), 1));
 };
 
