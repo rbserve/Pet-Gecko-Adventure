@@ -24,6 +24,11 @@ public:
         return result;
     }
 
+
+    static bool IsMouseClicked(const Rectangle& clickedRect){
+        return IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(GetMousePosition(), clickedRect);
+    }
+
 private:
     Ultilities() = default;
 };

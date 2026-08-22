@@ -17,9 +17,6 @@
 int main() {
     const int screenWidth = 1920;
     const int screenHeight = 1080;
-    // const int screenWidth = 1280;
-    // const int screenHeight = 720;
-    // const Rectangle screenRec = {0, 0, screenWidth, screenHeight};
 
     SetConfigFlags(FLAG_WINDOW_TOPMOST | FLAG_WINDOW_UNDECORATED);
     InitWindow(screenWidth, screenHeight, "Pet Cicak Adventure");
@@ -76,7 +73,7 @@ int main() {
             const Vector2 directionVec = Vector2{mouseTarget.x -gecko.GetPosition().x, mouseTarget.y - gecko.GetPosition().y};
 
             //deplet hunger
-            gecko.SetHunger(gecko.GetHunger() - 0.05 * GetFrameTime());
+            gecko.SetHunger(gecko.GetHunger() - 0.01 * GetFrameTime());
 
             const float angleToMove = Ultilities::GetMiddleDegree(gecko.GetForwardVec(1), directionVec);
             
@@ -91,8 +88,20 @@ int main() {
         //gecko hunger debuff
         if (gecko.GetHunger() < 0.2*gecko.GetMaxHunger()){
             gecko.SetSpeed(0.5 * gecko.GetMaxSpeed());
+            gecko.SetAffection(gecko.GetAffection() -1); 
         }else {
             gecko.SetSpeed(gecko.GetMaxSpeed());
+        }
+
+        //tired debuff
+        if (gecko.IsTired()){
+            gecko.SetHunger(gecko.GetHunger() - 0.05 * GetFrameTime());
+            
+        }
+
+        //gecko affection 
+        if (Ultilities::IsMouseClicked(gecko.GetCollisionRect())){
+            gecko.SetAffection(gecko.GetAffection() + 1);
         }
         
         //game over
@@ -160,7 +169,10 @@ int main() {
             
             //gecko hunger bar
             std::string hungerBar = "Hunger: ";
-            Ultilities::DrawOutlinedText(hungerBar.c_str(), 30, 10, 50, DARKBLUE, 2, WHITE);
+            const Color LIGHTBLUE = Color{173, 216, 230, 225};
+            Ultilities::DrawOutlinedText(hungerBar.c_str(), 30, 10, 50, DARKBLUE, 2, LIGHTBLUE);
+            Ultilities::DrawOutlinedText((std::string("Day ") + std::to_string(gecko.GetDaySurvived())).c_str(),
+                                         screenWidth - 200, 10, 50, DARKBLUE, 2, LIGHTBLUE);
             DrawRectangle(30, 80, 500, 50, GRAY);
             DrawRectangle(30, 80,(500* gecko.GetHunger()/gecko.GetMaxHunger()), 50, GREEN);
 

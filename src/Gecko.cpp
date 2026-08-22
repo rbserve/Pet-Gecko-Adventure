@@ -1,5 +1,6 @@
 #include "Gecko.hpp"
 #include <algorithm>
+#include <string>
 
 Gecko::Gecko():
     Entity(LoadTexture("asset/geckoSprite.png")),
@@ -8,8 +9,9 @@ Gecko::Gecko():
     m_affection(0), 
     m_speed(5),
     m_maxSpeed(5),
-    m_level(1),
-    m_secretFound(0)
+    m_daySurvived(1),
+    m_secretFound(0),
+    m_tiredTimer(GetTime())
 {};
 
 Gecko::~Gecko(){
@@ -22,8 +24,9 @@ void Gecko::Reset(){
     m_affection = 0;
     m_speed = 5;
     m_maxSpeed = 5;
-    m_level = 1;
+    m_daySurvived = 1;
     m_secretFound = 0;
+    StartTiredTimer();
 }
 
 void Gecko::Draw() {
@@ -36,6 +39,10 @@ void Gecko::Draw() {
         m_rotation, 
         WHITE 
             );
+    if (IsTired()){
+        DrawText(std::string("I am tired. I want to go home.").c_str(),
+        m_position.x - 150, m_position.y + 100, 20, DARKBLUE);
+    }
     // DrawRectangle(m_collisionRect.x, m_collisionRect.y, m_collisionRect.width, m_collisionRect.height, Color{225,0,0,100});
     // const int lineLength = 100;
     // DrawLine(m_position.x, m_position.y,m_position.x + GetForwardVec(lineLength).x, m_position.y + GetForwardVec(lineLength).y, RED);
@@ -62,18 +69,22 @@ void Gecko::SetMaxSpeed(int newVal){
     m_maxSpeed = std::clamp(newVal, 0, 10);
 };
 
-void Gecko::SetLevel(int val){
+void Gecko::SetDaySurvived(int val){
     if (val > 0){
         m_affection += 1;
         m_maxSpeed += 1;
         m_speed = m_maxSpeed;
         m_maxHunger += 1;
     }
-    m_level = val;
+    m_daySurvived = val;
 };
 
 void Gecko::SetSecretFound(int val){
     m_secretFound = val;
+}
+
+void Gecko::StartTiredTimer(){
+    m_tiredTimer = GetTime();
 }
 
 
@@ -96,9 +107,13 @@ int Gecko::GetMaxSpeed() const{
 Texture2D Gecko::GetSprite() const{
     return m_sprite;
 };
-int Gecko::GetLevel() const{
-    return m_level;
+int Gecko::GetDaySurvived() const{
+    return m_daySurvived;
 };
 int Gecko::GetSecretFound() const{
     return m_secretFound;
+};
+bool Gecko::IsTired() const{
+    // check if minutes is pass
+    return ((GetTime() - m_tiredTimer ) >= ( 1+ m_daySurvived) * 60.0f); 
 };
